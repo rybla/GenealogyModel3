@@ -11,7 +11,7 @@ def F(agent, ref_gen_ind, A):
 gen_params = {
     "name" : experimentname,
     "M" : lambda m, i: 10,
-    "N" : 10,
+    "N" : 5,
     "P" : lambda i: 1,
     "A" : 0,
     "C" : 0,
@@ -19,25 +19,26 @@ gen_params = {
     "T" : 1,
     "CF" : CF,
     "F"  : F,
-    "init_distribution" : [0.5],
+    "init_distribution" : [0.1],
     "replacement" : False
 }
 
 analyzer_params = {}
 
-metadata = {
-    "title": "CS Distribution",
-    "dependent": "CS Distribution",
-    "variable": "Generation Index",
-    "variable-space": range(10),
-    "iterations": 500,
-    "labels": [ str(i) for i in range(2**gen_params["T"])]
+meta = { 
+    "X-name": "Generation Index",
+    "Y-name": "CS Distribution (%)",
+    "Z-names": [ "CS#: " + str(i) for i in range(2**gen_params["T"])],
+    "Z-size": 2**gen_params["T"],
+    "iterations": 200,
 }
 
 analyzer = GA.GenealogyAnalyzer(analyzer_params, gen_params)
-analyzer.initResult(experimentname, metadata)
-analyzer.analyzeCSDistributions(experimentname)
+analyzer.initResult(experimentname, meta)
+analyzer.analyzeRelativeCSDistributions(experimentname)
 
 result = analyzer.getResult(experimentname)
+result.setFigParameter("title", "Relative CS Distribution evolution over Time")
 result.setFigParameter("legend",True)
-result.showFig()
+result.figPlot()
+result.figShow()

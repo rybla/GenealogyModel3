@@ -13,23 +13,16 @@ random.seed()
 # | Genealogy
 # ----------------
 # Notes:
-#   'make-' functions will return objects
-#   'add-' functions will not return objects, instead adding them to internal ledger
 #
 
 class Genealogy:
 
-    population = []
-    generation_sizes = []
-
     def __init__(self, params=default_genealogy_parameters):
         self.parameters = params
-        self.population = []
-        self.distribution = [
-            [0 for i in range(self.parameters["N"])]
-            for i in range(2**self.parameters["T"]) ]
-        self.generation_sizes = []
-        self.blank_cs = [ False for i in range(self.parameters["T"]) ]
+        self.population = None
+        self.distribution = np.zeros([2**self.parameters["T"],self.parameters["N"]], int)
+        self.generation_sizes = np.empty(self.parameters["N"],int)
+        self.blank_cs = np.zeros(self.parameters["T"],bool)
 
     def setParameters(self, params):
         for k,v in params.items():
@@ -39,8 +32,9 @@ class Genealogy:
         self.parameters[k] = v
 
     def generate(self):
-        # create blank genealogy
-        self.addAllBlankAgents()
+        # init arrays for population
+        # and generation sizes
+        self.initPopulation()
         # fill agents in first generation according to
         # parameters["init_distribution"]
         self.fillFirstGeneration()
@@ -48,24 +42,16 @@ class Genealogy:
         for i in range(1,self.parameters["N"]):
             self.fillGeneration(i)
 
-    def write(genealogy, name):
-        with open(name+".rawgen", "wb+") as file:
-            pickle.dump(genealogy, file, pickle.HIGHEST_PROTOCOL)
-
-    def read(name):
-        with open(name+".rawgen", "rb+") as file:
-            return pickle.load(file)
-
-    def addAllBlankAgents(self):
+    def initPopulation(self):
         # for each generation
         prev_m = 0
+        total = 0
         for i in range(self.parameters["N"]):
             m = self.parameters["M"](prev_m, i)
             prev_m = m
-            self.generation_sizes.append(m)
-            # for each agent in generation
-            for j in range(m):
-                self.population.append( Agent(self.blank_cs, i,j) )
+            self.generation_sizes[i] = m
+            total += m
+        self.population = np.empty(total,object)
 
     def toAbsoluteIndex(self, gen_ind, agent_ind):
         ind = 0
@@ -80,20 +66,27 @@ class Genealogy:
 
     def getGeneration(self, gen_ind):
         return self.population[
-            self.toAbsoluteIndex(gen_ind,0):self.toAbsoluteIndex(gen_ind+1,0)]
+            self.toAbsoluteIndex(gen_ind,0):
+            self.toAbsoluteIndex(gen_ind+1,0)]
 
     def getAllGenerations(self):
         return self.getGenerationRange(0,self.parameters["N"])
 
     def getGenerationRange(self, gen_ind_s, gen_ind_e):
         return self.population[
-            self.toAbsoluteIndex(gen_ind_s,0):self.toAbsoluteIndex(gen_ind_e,0)]
+            self.toAbsoluteIndex(gen_ind_s,0):
+            self.toAbsoluteIndex(gen_ind_e,0)]
 
     def updateDistributionEntry(self, agent):
         self.distribution[agent.cs_ind][agent.gen_ind] += 1
 
     def getGenerationSize(self, gen_ind):
         return self.generation_sizes[gen_ind]
+
+    def initAgent(self, gen_ind, agent_ind):
+        a = Agent(self.blank_cs, gen_ind, agent_ind)
+        self.population[self.toAbsoluteIndex(gen_ind, agent_ind)] = a
+        return a
 
     def getAgent(self, gen_ind, agent_ind):
         return self.population[self.toAbsoluteIndex(gen_ind, agent_ind)]
@@ -110,52 +103,54 @@ class Genealogy:
     def fillFirstGeneration(self):
         generation_size = self.generation_sizes[0]
         init_distribution = self.parameters["init_distribution"]
+        # initialize agents in first generation
+        for agent_ind in range(generation_size):
+            self.initAgent(0,agent_ind)
+        # set agents' character sets
         for char_ind in range(self.parameters["T"]):
             count = math.floor(init_distribution[char_ind] * generation_size)
-            picks = random.sample(self.getGeneration(0),count)
+            picks = np.random.choice(self.getGeneration(0),size=count,replace=False)
+            # picks = random.sample(self.getGeneration(0),count)
             for a in picks: a.setChar(char_ind, True)
+        # update agents'
         for a in self.getGeneration(0):
             a.updateCharFitnessFactor(self.parameters["CF"], self.parameters["G"])
             a.updateAbsoluteFitness(self.parameters["C"])
             a.updateCSIndex()
             self.updateDistributionEntry(a)
-            # print(a,a.getCS())
 
     def fillGeneration(self, gen_ind):
         generation_size = self.getGenerationSize(gen_ind)
-        previous_agents = self.getGenerationRange(0,gen_ind) # all agents before this generation
-
+        # all agents before this generation
+        previous_agents = self.getGenerationRange(0,gen_ind)
+        # fill all this generation's agents
         for agent_ind in range(generation_size):
-            child = self.getAgent(gen_ind, agent_ind)
+            child = self.initAgent(gen_ind, agent_ind)
+            self.getAgent(gen_ind, agent_ind)
             parents = self.chooseParents(previous_agents, gen_ind)
             for parent in parents: parent.addChild(self.parameters["C"], child)
             self.inheritCS(child, parents)
             self.updateDistributionEntry(child)
 
     def chooseParents(self, previous_agents, ref_gen_ind):
-        # with replacement
-        if self.parameters["replacement"]:
-            fitnesses = [ a.getFitness(self.parameters["F"], ref_gen_ind, self.parameters["A"]) for a in previous_agents ]
-            fitnesses = normalize(fitnesses)
-            return np.random.choice(
-                previous_agents,
-                p    = fitnesses,
-                size = self.parameters["P"](ref_gen_ind))
+        # calculate the fitnesses of the previous_agents
+        previous_agents_length = len(previous_agents)
+        fitnesses = np.empty(previous_agents_length,float)
+        for i in range(previous_agents_length):
+            fitnesses[i] = previous_agents[i].getFitness(
+                self.parameters["F"], ref_gen_ind, self.parameters["A"])
+        fitnesses = normalize(fitnesses)
 
-        # without replacement
-        else:
-            previous_agents_count = 0
-            fitnesses = []
-            for a in previous_agents:
-                fitnesses.append(a.getFitness(self.parameters["F"], ref_gen_ind, self.parameters["A"]))
-                previous_agents_count += 1
-            fitnesses = normalize(fitnesses)
-            parents_count = min(self.parameters["P"](ref_gen_ind),previous_agents_count)
-            return np.random.choice(
-                previous_agents,
-                p       = fitnesses,
-                size    = parents_count,
-                replace = self.parameters["replacement"])
+        size = self.parameters["P"](ref_gen_ind)
+        # if not replacement, can't have too many parents
+        if not self.parameters["replacement"]:
+            size = min(size,previous_agents_length)
+
+        return np.random.choice(
+            previous_agents,
+            p       = fitnesses,
+            size    = size,
+            replace = self.parameters["replacement"])
 
     def inheritCS(self, child, parents):
         parents_count = len(parents)

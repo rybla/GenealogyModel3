@@ -1,4 +1,5 @@
 from graphviz_defaults import *
+from subprocess import call
 
 class Graph:
 
@@ -62,14 +63,15 @@ class Graph:
         # end
         self.addContentLine("}")
 
-    def makeDotFile(self,name):
+    def makeDot(self,name):
         with open(name+".dot", "w+") as file:
             for line in self.content:
                 file.write(line + "\n")
 
-    def makePDF(self):
-        # TODO
-        return
+    def makePDF(self,name,removeDot=True):
+        self.makeDot(name)
+        call(["dot","-Tpdf",name+".dot","-o",name+".pdf"])
+        if removeDot: call(["rm",name+".dot"])
 
     def setAttribute(self, field, attr, val):
         self.addContentLine(field + " [" + attr + " = " + val + "];")
