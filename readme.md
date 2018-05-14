@@ -28,14 +28,13 @@ This will create a directory named `GenealogyModel3/` in your main documents dir
 
 ### Running `makegen`
 
-1. Think of a name for your run. I'll refer to it as `<name>`
-2. Create a new file `<name>.json` in the `makegen_configs/` directory.
-3. Customize the settings in the json file, following the template of `template.json`.
-4. Open terminal (command line) and execute the following:
+1. Create a new file `<config-name>.json` in the `makegen_configs/` directory, where `<config-name>` is the name of this config file.
+2. Customize the settings in the json file, following the template of `template.json`.
+3. Open terminal (command line) and execute the following:
     
 ```
     $ cd /path/to/GenealogyModel3/
-    $ python3 makegen.py makegen_config/<name>.json
+    $ python3 makegen.py makegen_config/<config-name>.json
 ```
 
-The first line navigates to the GenealogyModel3 directory (wherever it happens to be). The second line runs the `makegen` tool with the `<name>.json` settings as input. The resulting genealogy will be created in the `makegen_output/` directory. It will automatically be named to match `<name>`.
+The first line navigates to the GenealogyModel3 directory (wherever it happens to be). The second line runs the `makegen` tool with the `<config-name>.json` settings as input. The resulting genealogy will be created in the `makegen_output/` directory. It will automatically be named to match the `name` entry in the config file..
