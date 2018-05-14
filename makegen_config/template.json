@@ -1,0 +1,42 @@
+{
+	"genealogy-parameters" : {
+		"name" : "template",
+
+		"M"  : 10,
+		"N"  : 50,
+		"P"  : 2,
+		"V"  : [4,1],
+
+		"A"  : 0,
+		"C"  : 0,
+		"G"  : 1,
+
+		"init-distribution" : [0.5],
+
+		"replacement" : false
+	},
+
+	"graphviz-parameters" : {
+
+		"dot" : true,
+		"pdf" : false,
+		
+		"graph-attributes" : [
+			["nodesep" , "0.1"],
+	        ["ranksep" , "1"],
+	        ["ratio"   , "fill"],
+	        ["size"    , "6"]
+		],
+		
+		"node-attributes" : [
+			["style"     , "filled"],
+	        ["shape"     , "point"],
+	        ["width"     , "1"],
+	        ["height"    , "1"]
+		],
+		
+		"edge-attributes" : [
+			["penwidth", "1"]
+		]
+	}
+}
