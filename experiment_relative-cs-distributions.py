@@ -25,7 +25,7 @@ gen_params = {
 
 analyzer_params = {}
 
-meta = { 
+meta = {
     "X-name": "Generation Index",
     "Y-name": "CS Distribution (%)",
     "Z-names": [ "CS#: " + str(i) for i in range(2**gen_params["T"])],
@@ -41,4 +41,4 @@ result = analyzer.getResult(experimentname)
 result.setFigParameter("title", "Relative CS Distribution evolution over Time")
 result.setFigParameter("legend",True)
 result.figPlot()
-result.figShow()
+result.figSave("hithere.png")

@@ -16,11 +16,12 @@ Make sure your have the following installed:
 - [python3](https://www.python.org/download/releases/3.0/)
 - [Graphviz](https://www.graphviz.org/) (free download)
 - the numpy python library (install via `pip3 install numpy` on command line)
+- the matplotlib python  library (install via `pip3 install matplotlib` on command line)
 
 ### Downloading
 
 Before running anything, you will need to download this repository. I suggest doing something like the following in terminal (command line):
-    
+
     $ cd ~/Documents/
     $ git clone https://github.com/Riib11/GenealogyModel3.git
 
@@ -31,7 +32,7 @@ This will create a directory named `GenealogyModel3/` in your main documents dir
 1. Create a new file `<config-name>.json` in the `makegen_configs/` directory, where `<config-name>` is the name of this config file.
 2. Customize the settings in the json file, following the template of `template.json`.
 3. Open terminal (command line) and execute the following:
-    
+
 ```
     $ cd /path/to/GenealogyModel3/
     $ python3 makegen.py makegen_config/<config-name>.json

@@ -1,0 +1,13 @@
+{
+	"genealogy-parameters" : {
+        "name" : "experimentname",
+        "M" : 10,
+        "N" : 5,
+        "P" : 1,
+        "A" : 0,
+        "C" : 0,
+        "G" : 1,
+        "T" : 1,
+        "init_distribution" : [0.1]
+	}
+}
