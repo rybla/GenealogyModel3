@@ -56,6 +56,7 @@ graph = GV.Graph(genea,graphviz_parameters)
 graph.generate()
 graph.makeDot("makegen_output/"+name)
 if data["graphviz-parameters"]["pdf"]:
-    graph.makePDF(
-        "makegen_output/"+name,
-        not data["graphviz-parameters"]["dot"])
+    graph.makePDF("makegen_output/"+name)
+
+if data["graphviz-parameters"]["svg"]:
+    graph.makeSVG("makegen_output/"+name)

@@ -20,21 +20,22 @@
 
 		"dot" : true,
 		"pdf" : true,
-		
+		"svg" : true,
+
 		"graph-attributes" : [
 			["nodesep" , "0.1"],
 	        ["ranksep" , "1"],
 	        ["ratio"   , "fill"],
 	        ["size"    , "6"]
 		],
-		
+
 		"node-attributes" : [
 			["style"     , "filled"],
 	        ["shape"     , "point"],
 	        ["width"     , "1"],
 	        ["height"    , "1"]
 		],
-		
+
 		"edge-attributes" : [
 			["penwidth", "1"]
 		]
