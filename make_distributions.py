@@ -1,8 +1,9 @@
-import genealogy as G
-import graphviz as GV
-import genealogy_analyzer as GA
+import genealogy_lib.genealogy as G
+import genealogy_lib.graphviz as GV
+import genealogy_lib.genealogy_analyzer as GA
 import sys
 import json
+import tempfile
 
 def CF(cs): return 4 if cs[0] else 1
 def F(agent, ref_gen_ind, A):

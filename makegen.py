@@ -1,5 +1,5 @@
-import genealogy as G
-import graphviz as GV
+import genealogy_lib.genealogy as G
+import genealogy_lib.graphviz as GV
 import json
 import sys
 
@@ -54,9 +54,9 @@ genea.generate()
 # Graph
 graph = GV.Graph(genea,graphviz_parameters)
 graph.generate()
-graph.makeDot("makegen_output/"+name)
+graph.makeDot("makegen_output/"+name+".dot")
 if data["graphviz-parameters"]["pdf"]:
-    graph.makePDF("makegen_output/"+name)
+    graph.makePDF("makegen_output/"+name+".pdf")
 
 if data["graphviz-parameters"]["svg"]:
-    graph.makeSVG("makegen_output/"+name)
+    graph.makeSVG("makegen_output/"+name+".svg")

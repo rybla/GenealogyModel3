@@ -3,9 +3,9 @@ import numpy as np
 import math
 import copy
 import pickle
-import binary_utils
-from utilities import *
-from genealogy_defaults import *
+from genealogy_lib import binary_utils
+from genealogy_lib.utilities import *
+from genealogy_lib.genealogy_defaults import *
 random.seed()
 
 

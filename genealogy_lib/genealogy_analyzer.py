@@ -1,12 +1,12 @@
 import matplotlib
 matplotlib.use('Agg')
-import data_utils
-import genealogy as G
-import graphviz as GV
+import genealogy_lib.data_utils
+import genealogy_lib.genealogy as G
+import genealogy_lib.graphviz as GV
 
-from genealogy_defaults import default_genealogy_parameters
-from genealogy_analyzer_figure_defaults import default_fig_parameters
-from genealogy_analyzer_defaults import default_genealogy_analyzer_parameters
+from genealogy_lib.genealogy_defaults import default_genealogy_parameters
+from genealogy_lib.genealogy_analyzer_figure_defaults import default_fig_parameters
+from genealogy_lib.genealogy_analyzer_defaults import default_genealogy_analyzer_parameters
 
 import matplotlib.pyplot as plt
 import copy
