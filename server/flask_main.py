@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from flask import Flask, render_template, request
+from genealogy_lib import graphviz
 
 # This is a tinkertoy web app. Please enjoy.
 
@@ -22,7 +23,14 @@ app.debug = True
 @app.route('/')
 @app.route('/index.html')
 def index():
-    return "hi there!!"#app.send_static_file('html/index.html')
+    return app.send_static_file('html/graph.html')
+
+@app.route('/get_plot', methods=['POST'])
+def plot_thingy():
+    #print(form.args.get('fname'))
+    print(request.form)
+    print(request.form.get('lname'))
+    return app.send_static_file('svg/example_graph.svg')
 
 def run_server_publicly():
-    app.run(host= '0.0.0.0')
+    app.run(host='0.0.0.0')
