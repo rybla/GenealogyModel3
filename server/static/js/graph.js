@@ -1,26 +1,30 @@
-$( document ).ready(function(){
-    console.log("lakfjlaksdjl")
-    document.getElementById("submitbutton").onclick = function(){
+function load_svg(){
+    console.log("kjnasdasd");
 
-
-        console.log("kjnasdasd");
-
-        var result = {
-            'fname': document.getElementById('fname').value,
-            'lname': document.getElementById('lname').value,
-        }
-        $.ajax({
-            type: 'POST',
-            url: "/get_plot",
-            data: result,
-            dataType: "text",
-            success: function(data){
-                var container = document.getElementById("svg_item");
-                container.innerHTML = data;
-                //var img = document.getElementById('img');
-                //var url = window.URL || window.webkitURL;
-                //img.src = url.createObjectURL(data);
-            }
-        })
+    var result = {
+        'Mval': document.getElementById('Mval').value,
+        'Nval': document.getElementById('Nval').value,
+        'Pval': document.getElementById('Pval').value,
+        'RedSurvival': document.getElementById('RedSurvival').value,
+        'BlueSurvival': document.getElementById('BlueSurvival').value,
+        'RedStart': document.getElementById('RedStart').value,
+        'BlueStart': document.getElementById('BlueStart').value,
     }
+    $.ajax({
+        type: 'POST',
+        url: "/get_plot",
+        data: result,
+        dataType: "text",
+        cache: false,
+        success: function(data){
+            var container = document.getElementById("svg_item");
+            container.innerHTML = data;
+        }
+    })
+}
+
+$( document ).ready(function(){
+    load_svg()
+    console.log("lakfjlaksdjl")
+    document.getElementById("submitbutton").onclick = load_svg
 })
