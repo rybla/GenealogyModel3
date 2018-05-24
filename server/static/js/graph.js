@@ -9,6 +9,8 @@ function load_svg(){
         'BlueSurvival': document.getElementById('BlueSurvival').value,
         'RedStart': document.getElementById('RedStart').value,
         'BlueStart': document.getElementById('BlueStart').value,
+        'Aval': document.getElementById('Aval').value,
+        'Cval': document.getElementById('Cval').value,
     }
     $.ajax({
         type: 'POST',

@@ -38,19 +38,23 @@ def run_server_publicly():
     app.run(host='0.0.0.0')
 
 def get_user_args(form_data):
+    print(form_data)
     return {
         "M": int(form_data.get('Mval')),
         "N": int(form_data.get('Nval')),
         "P": int(form_data.get('Pval')),
+        "A": int(form_data.get('Aval')),
+        "C": int(form_data.get('Cval')),
         #"P": int(request.form.get('RedToBlueSurvival')),
         "init-distribution": [int(form_data.get('RedStart'))/(int(request.form.get('BlueStart'))+int(request.form.get('RedStart')))],
-        "V": [int(form_data.get('RedSurvival'))/int(form_data.get('BlueSurvival')),1]
+        "V": [int(form_data.get('RedSurvival')),int(form_data.get('BlueSurvival'))]
     }
 
 def verify_user_args(user_args):
     assert (user_args['N']) > 0
     assert (user_args['M']) > 0
     assert (user_args['P']) > 0
+    assert (user_args['C']) >= 0
     user_args['init-distribution']
 
 def process_template(user_args):
@@ -78,8 +82,8 @@ def process_template(user_args):
         "M" : M,
         "N" : N,
         "P" : P,
-        "A" : json_genparams["A"],
-        "C" : json_genparams["C"],
+        "A" : user_args["A"],
+        "C" : user_args["C"],
         "G" : json_genparams["G"],
         "T" : 1, # json_genparams["T"],
         "CF" : CF,
