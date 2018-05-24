@@ -1,5 +1,5 @@
-import genealogy as G
-import graphviz as GV
+import genealogy_lib.genealogy as G
+import genealogy_lib.graphviz as GV
 
 # Knobs
 NAME = "april20"

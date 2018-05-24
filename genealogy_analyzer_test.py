@@ -1,6 +1,6 @@
-import genealogy as G
-import graphviz as GV
-import genealogy_analyzer as GA
+import genealogy_lib.genealogy as G
+import genealogy_lib.graphviz as GV
+import genealogy_lib.genealogy_analyzer as GA
 
 experimentname = "test"
 
@@ -25,7 +25,7 @@ gen_params = {
 
 analyzer_params = {}
 
-meta = { 
+meta = {
     "X-name": "Generation Index",
     "Y-name": "CS Distribution",
     "Z-names": [ "CS#: " + str(i) for i in range(2**gen_params["T"])],

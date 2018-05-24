@@ -1,5 +1,6 @@
-from graphviz_defaults import *
+from genealogy_lib.graphviz_defaults import *
 from subprocess import call
+import tempfile
 
 class Graph:
 
@@ -64,14 +65,19 @@ class Graph:
         self.addContentLine("}")
 
     def makeDot(self,name):
-        with open(name+".dot", "w+") as file:
+        with open(name, "w") as file:
             for line in self.content:
                 file.write(line + "\n")
 
-    def makePDF(self,name,removeDot=True):
-        self.makeDot(name)
-        call(["dot","-Tpdf",name+".dot","-o",name+".pdf"])
-        if removeDot: call(["rm",name+".dot"])
+    def makePDF(self,name):
+        with tempfile.NamedTemporaryFile() as dotfile:
+            self.makeDot(dotfile.name)
+            call(["dot","-Tpdf",dotfile.name,"-o",name])
+
+    def makeSVG(self,name):
+        with tempfile.NamedTemporaryFile() as dotfile:
+            self.makeDot(dotfile.name)
+            call(["dot","-Tsvg",dotfile.name,"-o",name])
 
     def setAttribute(self, field, attr, val):
         self.addContentLine(field + " [" + attr + " = " + val + "];")

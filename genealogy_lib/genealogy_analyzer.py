@@ -1,16 +1,19 @@
-import data_utils
-import genealogy as G
-import graphviz as GV
+import matplotlib
+matplotlib.use('Agg')
+import genealogy_lib.data_utils
+import genealogy_lib.genealogy as G
+import genealogy_lib.graphviz as GV
 
-from genealogy_defaults import default_genealogy_parameters
-from genealogy_analyzer_figure_defaults import default_fig_parameters
-from genealogy_analyzer_defaults import default_genealogy_analyzer_parameters
+from genealogy_lib.genealogy_defaults import default_genealogy_parameters
+from genealogy_lib.genealogy_analyzer_figure_defaults import default_fig_parameters
+from genealogy_lib.genealogy_analyzer_defaults import default_genealogy_analyzer_parameters
 
 import matplotlib.pyplot as plt
 import copy
 import math
 import numpy as np
 from tqdm import tqdm
+
 
 class GenealogyAnalyzer:
 
@@ -37,7 +40,7 @@ class GenealogyAnalyzer:
         iterations = result.meta["iterations"]
         raw = [ # [char_ind][gen_ind] -> array with entry for each iteration
             [ [] for _ in range(self.gen_params["N"]) ]
-                for _ in range(2**self.gen_params["T"]) ] 
+                for _ in range(2**self.gen_params["T"]) ]
         avg = [] # [char_ind][gen_ind] -> average
         # std = [] # [char_ind][gen_ind] -> standard deviation
 
@@ -71,7 +74,7 @@ class GenealogyAnalyzer:
         iterations = result.meta["iterations"]
         raw = [ # [char_ind][gen_ind] -> array with entry for each iteration
             [ [] for _ in range(self.gen_params["N"]) ]
-                for _ in range(2**self.gen_params["T"]) ] 
+                for _ in range(2**self.gen_params["T"]) ]
         avg = [] # [char_ind][gen_ind] -> average
         # std = [] # [char_ind][gen_ind] -> standard deviation
 
@@ -112,7 +115,7 @@ class GenealogyAnalyzer:
         xs = [i for i in range(len(avg[0]))]
         for zi in range(len(avg)):
             result.addData(zi,xs,avg[zi])
-        
+
 class Result:
 
     def __init__(self, name, meta):
@@ -164,4 +167,4 @@ class Result:
         plt.show()
 
     def figSave(self, name):
-        pass
+        plt.savefig(name)
