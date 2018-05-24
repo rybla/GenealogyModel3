@@ -21,7 +21,9 @@
 			["nodesep" , "0.1"],
 	        ["ranksep" , "1"],
 	        ["ratio"   , "fill"],
-	        ["size"    , "6"]
+	        ["size"    , "6"],
+	        ["splines"    , "false"],
+	        ["overlap"    , "false"]
 		],
 
 		"node-attributes" : [
@@ -32,7 +34,8 @@
 		],
 
 		"edge-attributes" : [
-			["penwidth", "1"]
+			["penwidth", "1"],
+	        ["len"    , "2"]
 		]
 	}
 }
