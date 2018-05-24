@@ -53,6 +53,7 @@ function load_svg(){
         'BlueStart': document.getElementById('BlueStart').value,
         'Aval': document.getElementById('Aval').value,
         'Cval': document.getElementById('Cval').value,
+        'should_run_fast': document.getElementById('fast_checkbox').checked,
     }
     $.ajax({
         type: 'POST',

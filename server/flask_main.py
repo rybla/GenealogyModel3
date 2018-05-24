@@ -39,6 +39,7 @@ def run_server_publicly():
 
 def get_user_args(form_data):
     #print(form_data)
+    print(form_data.get('should_run_fast'))
     return {
         "M": int(form_data.get('Mval')),
         "N": int(form_data.get('Nval')),
@@ -47,7 +48,8 @@ def get_user_args(form_data):
         "C": float(form_data.get('Cval')),
         #"P": int(request.form.get('RedToBlueSurvival')),
         "init-distribution": [int(form_data.get('RedStart'))/(int(request.form.get('BlueStart'))+int(request.form.get('RedStart')))],
-        "V": [int(form_data.get('RedSurvival')),int(form_data.get('BlueSurvival'))]
+        "V": [int(form_data.get('RedSurvival')),int(form_data.get('BlueSurvival'))],
+        'assign-position': form_data.get('should_run_fast') == "true"
     }
 
 def verify_user_args(user_args):
@@ -94,6 +96,7 @@ def process_template(user_args):
 
     graphviz_parameters = data["graphviz-parameters"]
     graphviz_parameters["cs-to-color"] = lambda cs: "#FF0000" if cs[0] else "#0000FF"
+    graphviz_parameters["assign-position"] = user_args['assign-position']
 
     # Genealogy
     genea = G.Genealogy(genealogy_parameters)

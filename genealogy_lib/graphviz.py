@@ -1,6 +1,7 @@
 from genealogy_lib.graphviz_defaults import *
 from subprocess import call
 import tempfile
+import sys
 
 class Graph:
 
@@ -30,6 +31,7 @@ class Graph:
 
         # add all nodes and edges
         # for each generation
+
         for gen_ind in range(self.genealogy.parameters["N"]):
             generation_population = self.genealogy.getGeneration(gen_ind)
             # for each agent
@@ -38,11 +40,13 @@ class Graph:
                 agent_nodename = self.agentToNodeName(agent)
                 agent_nodelabel = str(agent.getAbsoluteFitness())
                 agent_color = self.parameters["cs-to-color"](agent.getCS())
+                agent_pos = self.node_pos(gen_ind,agent_ind) if self.parameters["assign-position"] else ""
                 # node
                 self.addNode(
                     agent_nodename,
                     agent_nodelabel,
-                    agent_color
+                    agent_color,
+                    pos=agent_pos
                 )
                 # edges to all children
                 # print("getChildrenInds:",agent.getChildrenInds())
@@ -55,38 +59,49 @@ class Graph:
                 # add to generation
                 generations[gen_ind].append(agent_nodename)
 
-        # add ranks
-        rankslen = len(generations)
-        self.addRankNodes(rankslen)
-        for i in range(rankslen):
-            self.setSameRank(generations[i],i)
+        # add ranks if positions aren't directly assigned
+        if not self.parameters["assign-position"]:
+            rankslen = len(generations)
+            self.addRankNodes(rankslen)
+            for i in range(rankslen):
+                self.setSameRank(generations[i],i)
 
         # end
         self.addContentLine("}")
+
+    def node_pos(self,gen_id,agent_ind):
+        pos_focus_factor = 100
+        reversed_gen_id = self.genealogy.parameters["N"] - gen_id
+        return '"{},{}!"'.format(pos_focus_factor*agent_ind,pos_focus_factor*reversed_gen_id)
 
     def makeDot(self,name):
         with open(name, "w") as file:
             for line in self.content:
                 file.write(line + "\n")
 
-    def makePDF(self,name):
+    def make_output(self,name,type):
         with tempfile.NamedTemporaryFile() as dotfile:
             self.makeDot(dotfile.name)
-            call(["dot","-Tpdf",dotfile.name,"-o",name])
+            if self.parameters["assign-position"]:
+                call(["neato","-n","-T"+type,dotfile.name,"-o",name])
+            else:
+                call(["dot","-T"+type,dotfile.name,"-o",name])
+
+    def makePDF(self,name):
+        self.make_output(name,"pdf")
 
     def makeSVG(self,name):
-        with tempfile.NamedTemporaryFile() as dotfile:
-            self.makeDot(dotfile.name)
-            call(["dot","-Tsvg",dotfile.name,"-o",name])
+        self.make_output(name,"svg")
 
     def setAttribute(self, field, attr, val):
         self.addContentLine(field + " [" + attr + " = " + val + "];")
 
-    def addNode(self, name, label, color, shape=None, width=None, fontsize=None):
+    def addNode(self, name, label, color, shape=None, width=None, fontsize=None, pos=None):
         s = "\""+name+"\" [ label=\""+label+"\" color=\""+color+"\""
         if shape: s += " shape="+shape
         if width: s += " width="+width
         if fontsize: s += " fontsize="+fontsize
+        if pos: s += " pos="+pos
         s += "];"
         self.addContentLine(s)
 
