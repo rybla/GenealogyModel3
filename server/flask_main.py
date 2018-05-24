@@ -43,8 +43,8 @@ def get_user_args(form_data):
         "M": int(form_data.get('Mval')),
         "N": int(form_data.get('Nval')),
         "P": int(form_data.get('Pval')),
-        "A": int(form_data.get('Aval')),
-        "C": int(form_data.get('Cval')),
+        "A": float(form_data.get('Aval')),
+        "C": float(form_data.get('Cval')),
         #"P": int(request.form.get('RedToBlueSurvival')),
         "init-distribution": [int(form_data.get('RedStart'))/(int(request.form.get('BlueStart'))+int(request.form.get('RedStart')))],
         "V": [int(form_data.get('RedSurvival')),int(form_data.get('BlueSurvival'))]
