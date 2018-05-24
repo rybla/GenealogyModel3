@@ -38,7 +38,7 @@ def run_server_publicly():
     app.run(host='0.0.0.0')
 
 def get_user_args(form_data):
-    print(form_data)
+    #print(form_data)
     return {
         "M": int(form_data.get('Mval')),
         "N": int(form_data.get('Nval')),
