@@ -11,7 +11,7 @@ V = [4,1]
 def _M(prev_m, gen_ind): return M
 def _P(gen_ind): return P
 def CF(cs): return V[0] if cs[0] else V[1]
-def F(agent, ref_gen_ind, A): return (agent.absolute_fitness+(ref_gen_ind - agent.gen_ind) ** A)
+def F(agent, ref_gen_ind, A): return (agent.absolute_fitness*(ref_gen_ind - agent.gen_ind) ** A)
 
 genealogy_parameters = {
     "name" : NAME,
