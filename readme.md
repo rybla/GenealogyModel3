@@ -1,6 +1,6 @@
 # Genealogy 3
 
-This is the third version of my simple genealogy modeller. This program creates randomized genealogies with a process influenced by several customizable parameters.
+This is the third version of my simple genealogy modeler. This program creates randomized genealogies with a process influenced by several customizable parameters.
 
 ## The `makegen` tool
 
@@ -15,8 +15,7 @@ Make sure your have the following installed:
 
 - [python3](https://www.python.org/download/releases/3.0/)
 - [Graphviz](https://www.graphviz.org/) (free download)
-- the numpy python library (install via `pip3 install numpy` on command line)
-- the matplotlib python  library (install via `pip3 install matplotlib` on command line)
+- Various python packages listed in `requirements.txt`. These can be installed with `pip install -r requirements.txt`
 
 ### Downloading
 
@@ -39,3 +38,7 @@ This will create a directory named `GenealogyModel3/` in your main documents dir
 ```
 
 The first line navigates to the GenealogyModel3 directory (wherever it happens to be). The second line runs the `makegen` tool with the `<config-name>.json` settings as input. The resulting genealogy will be created in the `makegen_output/` directory. It will automatically be named to match the `name` entry in the config file..
+
+## Server
+
+Much of the functionality of `makegen` can be offered on a website. The code for this is in the `server` folder, and the server can bs started with `start_server.py`.
