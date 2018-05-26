@@ -17,6 +17,12 @@
 	},
 
 	"graphviz-parameters" : {
+		"dot" : true,
+		"pdf" : true,
+		"svg" : true,
+
+		"assign-position" : true,
+
 		"graph-attributes" : [
 			["nodesep" , "0.1"],
 	        ["ranksep" , "1"],
