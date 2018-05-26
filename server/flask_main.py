@@ -77,7 +77,7 @@ def process_template(user_args):
     def M(prev_m, gen_ind): return M_
     def P(gen_ind): return P_
     def CF(cs): return V[0] if cs[0] else V[1]
-    def F(agent, ref_gen_ind, A): return (agent.absolute_fitness+(ref_gen_ind - agent.gen_ind) ** A)
+    def F(agent, ref_gen_ind, A): return (agent.absolute_fitness*(ref_gen_ind - agent.gen_ind) ** A)
 
     genealogy_parameters = {
         "name" : name,
