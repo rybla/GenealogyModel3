@@ -1,6 +1,6 @@
 def CF(cs): 4 if cs[0] else 1
 def F(agent, ref_gen_ind, A):
-    return agent.absolute_fitness + (ref_gen_ind - agent.gen_ind) ** A
+    return agent.absolute_fitness * (ref_gen_ind - agent.gen_ind) ** A
 
 gen_params = {
     "name" : "test",

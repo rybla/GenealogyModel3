@@ -94,8 +94,8 @@ class Genealogy:
     def getAgentFitness(self, ref_gen_ind, gen_ind, agent_ind):
         agent = self.getAgent(gen_ind, agent_ind)
         return ( agent.getCharFitness() ** self.parameters["G"]
-               + agent.getChildrenCount()    ** self.parameters["C"]
-               + (ref_gen_ind - gen_ind)     ** self.parameters["A"] )
+               * agent.getChildrenCount()    ** self.parameters["C"]
+               * (ref_gen_ind - gen_ind)     ** self.parameters["A"] )
 
     def makeCSIterator(self):
         return binary_utils.makeBinaryIterator(len(self.blank_cs)**2)
@@ -202,7 +202,7 @@ class Agent:
 
     def updateAbsoluteFitness(self, C):
         self.absolute_fitness = ( self.getCharFitnessFactor()
-                                + self.getChildrenCount()    ** C )
+                                * self.getChildrenCount()    ** C )
     def getAbsoluteFitness(self): return self.absolute_fitness
 
     def updateCharFitnessFactor(self, CF, G):
