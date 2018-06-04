@@ -2,6 +2,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
 <script src="/static/js/graph.js"></script>
+<script src="/static/js/get_svg.js"></script>
 
 <style>
 p.err_style{
@@ -25,10 +26,12 @@ p.err_style{
                     <input type="number" id="BlueStart" value=1><br>
         <div id="Starterr" hidden><p class="err_style">Input error: Both numbers must be greater than 0</p><br></div>
         Age adjustment: <input type="number" id="Aval" step=0.2 value=0><br>
+        <div id="Cvalerr" hidden><p class="err_style">Input error: Needs to be a number</p><br></div>
         Citation adjustment: <input type="number" id="Cval" step=0.2 value=0><br>
         <div id="Cvalerr" hidden><p class="err_style">Input error: Cannot be negative</p><br></div>
         Enble fast graph rendering: <input id="fast_checkbox" type="checkbox">
     </div>
     <button id="submitbutton">Generate Plot</button>
-    <div id="svg_item"></div>
+    <div id="svg_item">Loading...</div>
+    <button id="downloadbutton" hidden>Download</button>
 </body>

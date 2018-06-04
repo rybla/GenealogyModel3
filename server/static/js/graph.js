@@ -1,28 +1,42 @@
+var current_result;
+function checkposint(num_str){
+    return /^(0|[1-9]\d*)$/.test(num_str)
+}
+function check_num(num_str){
+    return num_str
+}
+function check_non_neg(num_str){
+    return num_str && Number(num_str) >= 0
+}
 function verify_user_args(){
     retval = true;
-    if(!(Number(document.getElementById('Mval').value) > 0)){
+    if(!(checkposint(document.getElementById('Mval').value))){
         $("#Mvalerr").show()
         retval = false
     }
-    if(!(Number(document.getElementById('Nval').value) > 0)){
+    if(!(checkposint(document.getElementById('Nval').value))){
         $("#Nvalerr").show()
         retval = false
     }
-    if(!(Number(document.getElementById('Pval').value) > 0)){
+    if(!(checkposint(document.getElementById('Pval').value))){
         $("#Pvalerr").show()
         retval = false
     }
-    if(!(Number(document.getElementById('RedSurvival').value) > 0 &&
-         Number(document.getElementById('BlueSurvival').value) > 0)){
+    if(!(checkposint(document.getElementById('RedSurvival').value) &&
+         checkposint(document.getElementById('BlueSurvival').value))){
         $("#Survivalerr").show()
         retval = false
     }
-    if(!(Number(document.getElementById('RedStart').value) > 0 &&
-         Number(document.getElementById('BlueStart').value) > 0)){
+    if(!(checkposint(document.getElementById('RedStart').value) &&
+         checkposint(document.getElementById('BlueStart').value))){
         $("#Starterr").show()
         retval = false
     }
-    if(!(Number(document.getElementById('Cval').value) >= 0)){
+    if(!(check_non_neg(document.getElementById('Aval').value))){
+        $("#Cvalerr").show()
+        retval = false
+    }
+    if(!(check_num(document.getElementById('Cval').value))){
         $("#Cvalerr").show()
         retval = false
     }
@@ -36,11 +50,17 @@ function hide_all(){
     $("#Starterr").hide()
     $("#Cvalerr").hide()
 }
+function place_text_on_svg(text){
+    $("#downloadbutton").hide()
+    document.getElementById("svg_item").innerHTML = text
+}
 function load_svg(){
     hide_all()
     if(!verify_user_args()){
+        place_text_on_svg("Bad user input")
         return false;
     }
+    place_text_on_svg("Loading...")
     console.log("kjnasdasd");
 
     var result = {
@@ -53,24 +73,32 @@ function load_svg(){
         'BlueStart': document.getElementById('BlueStart').value,
         'Aval': document.getElementById('Aval').value,
         'Cval': document.getElementById('Cval').value,
-        'should_run_fast': document.getElementById('fast_checkbox').checked,
+        'should_run_fast': document.getElementById('fast_checkbox').checked ? "true" : "false",
     }
-    $.ajax({
-        type: 'POST',
-        url: "/get_plot",
-        data: result,
-        dataType: "text",
-        cache: false,
-        success: function(data){
-            var container = document.getElementById("svg_item");
-            container.innerHTML = data;
-        }
-    })
+    current_result = result
+    get_svg(result)
     return true;
 }
-
+function download_data(filename, data) {
+    var blob = new Blob([data], {type: 'text/svg'});
+    if(window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveBlob(blob, filename);
+    }
+    else{
+        var elem = window.document.createElement('a');
+        elem.href = window.URL.createObjectURL(blob);
+        elem.download = filename;
+        document.body.appendChild(elem);
+        elem.click();
+        document.body.removeChild(elem);
+    }
+}
+function on_download_click(){
+    download_data($.param(current_result)+".svg",document.getElementById("svg_item").innerHTML)
+}
 $( document ).ready(function(){
     load_svg()
     console.log("lakfjlaksdjl")
     document.getElementById("submitbutton").onclick = load_svg
+    document.getElementById("downloadbutton").onclick = on_download_click
 })
