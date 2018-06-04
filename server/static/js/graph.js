@@ -22,11 +22,11 @@ function verify_user_args(){
         $("#Pvalerr").show()
         retval = false
     }
-    if(!(checkposint(document.getElementById('RedSurvival').value) &&
+    /*if(!(checkposint(document.getElementById('RedSurvival').value) &&
          checkposint(document.getElementById('BlueSurvival').value))){
         $("#Survivalerr").show()
         retval = false
-    }
+    }*/
     /*if(!(checkposint(document.getElementById('RedStart').value) &&
          checkposint(document.getElementById('BlueStart').value))){
         $("#Starterr").show()
@@ -68,6 +68,10 @@ function load_svg(){
         'Nval': document.getElementById('Nval').value,
         'Pval': document.getElementById('Pval').value,
         'WithReplacement': document.getElementById('with_replacement').checked ? "true" : "false",
+        'DarkBlueSurv': document.getElementById('DarkBlueSurv').value,
+        'DarkRedSurv': document.getElementById('DarkRedSurv').value,
+        'LightBlueSurv': document.getElementById('LightBlueSurv').value,
+        'LightRedSurv': document.getElementById('LightRedSurv').value,
         'RedSurvival': document.getElementById('RedSurvival').value,
         'BlueSurvival': document.getElementById('BlueSurvival').value,
         //'RedStart': document.getElementById('RedStart').value,
@@ -75,6 +79,7 @@ function load_svg(){
         'Aval': document.getElementById('Aval').value,
         'Cval': document.getElementById('Cval').value,
         'should_run_fast': document.getElementById('fast_checkbox').checked ? "true" : "false",
+        'use_single_trait': document.getElementById("single_trait_id").checked ? "true" : "false",
     }
     current_result = result
     get_svg(result)
@@ -97,8 +102,19 @@ function download_data(filename, data) {
 function on_download_click(){
     download_data($.param(current_result)+".svg",document.getElementById("svg_item").innerHTML)
 }
+function radio_change(){
+    document.getElementById("single_trait_id").onclick = function(){
+        $("#single_trait_survival").show()
+        $("#two_trait_survival").hide()
+    }
+    document.getElementById("two_trait_id").onclick = function(){
+        $("#single_trait_survival").hide()
+        $("#two_trait_survival").show()
+    }
+}
 $( document ).ready(function(){
     load_svg()
+    radio_change()
     console.log("lakfjlaksdjl")
     document.getElementById("submitbutton").onclick = load_svg
     document.getElementById("downloadbutton").onclick = on_download_click
