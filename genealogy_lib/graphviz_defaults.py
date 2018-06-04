@@ -1,5 +1,19 @@
+sing_colors = [
+    "#FF0000",
+    "#0000FF",
+]
+double_colors = [
+    [
+        "#ff2626",
+        "#2626ff",
+    ],
+    [
+        "#bf0000",
+        "#0000b2",
+    ]
+]
 default_graphviz_parameters = {
-    
+
     "graph-attributes" : [
         ("nodesep", "0.1"),
         ("ranksep", "1"),
@@ -20,7 +34,7 @@ default_graphviz_parameters = {
     ],
 
     "cs-to-color" : (
-        lambda cs: "#FF0000" if cs[0] else "#0000FF"
+        lambda cs: sing_colors[cs[0]] if len(cs) == 1 else double_colors[cs[0]][cs[1]]
     )
 
 }

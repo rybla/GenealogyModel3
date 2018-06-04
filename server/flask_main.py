@@ -6,6 +6,7 @@ import json
 import tempfile
 import genealogy_lib.genealogy as G
 import genealogy_lib.graphviz as GV
+from genealogy_lib.graphviz_defaults import default_graphviz_parameters
 
 # This is a tinkertoy web app. Please enjoy.
 
@@ -40,7 +41,7 @@ def run_server_publicly():
 def get_user_args(form_data):
     #print(form_data)
     #print(form_data.get('should_run_fast'))
-    use_single_trait = form_data.get('use_single_trait')
+    use_single_trait = form_data.get('use_single_trait') == "true"
     return {
         "M": int(form_data.get('Mval')),
         "N": int(form_data.get('Nval')),
@@ -49,7 +50,21 @@ def get_user_args(form_data):
         "C": float(form_data.get('Cval')),
         #"P": int(request.form.get('RedToBlueSurvival')),
         "init-distribution": [0.5] if use_single_trait else [0.5,0.5],#[int(form_data.get('RedStart'))/(int(request.form.get('BlueStart'))+int(request.form.get('RedStart')))],
-        "V": [int(form_data.get('RedSurvival')),int(form_data.get('BlueSurvival'))],
+        "use_single": use_single_trait,
+        "V": [
+            float(form_data.get('RedSurvival')),
+            float(form_data.get('BlueSurvival'))
+        ],
+        "TWO":  [
+            [
+                float(form_data.get('DarkBlueSurv')),
+                float(form_data.get('DarkRedSurv'))
+            ],
+            [
+                float(form_data.get('LightBlueSurv')),
+                float(form_data.get('LightRedSurv'))
+            ],
+        ],
         'assign-position': form_data.get('should_run_fast') == "true"
     }
 
@@ -74,10 +89,13 @@ def process_template(user_args):
     N  = user_args["N"]
     P_ = user_args["P"]
     V  = user_args["V"]
+    TWO  = user_args["TWO"]
+    using_single = user_args["use_single"]
 
     def M(prev_m, gen_ind): return M_
     def P(gen_ind): return P_
-    def CF(cs): return V[0] if cs[0] else V[1]
+    def CF(cs):
+        return V[cs[0]] if using_single else TWO[cs[0]][cs[1]]
     def F(agent, ref_gen_ind, A): return (agent.absolute_fitness+(ref_gen_ind - agent.gen_ind) ** A)
 
     genealogy_parameters = {
@@ -88,7 +106,7 @@ def process_template(user_args):
         "A" : user_args["A"],
         "C" : user_args["C"],
         "G" : json_genparams["G"],
-        "T" : 1, # json_genparams["T"],
+        "T" : 1 if using_single else 2 , # json_genparams["T"],
         "CF" : CF,
         "F"  : F,
         "init_distribution" : user_args["init-distribution"],
@@ -96,7 +114,7 @@ def process_template(user_args):
     }
 
     graphviz_parameters = data["graphviz-parameters"]
-    graphviz_parameters["cs-to-color"] = lambda cs: "#FF0000" if cs[0] else "#0000FF"
+    graphviz_parameters["cs-to-color"] = default_graphviz_parameters["cs-to-color"]
     graphviz_parameters["assign-position"] = user_args['assign-position']
 
     # Genealogy

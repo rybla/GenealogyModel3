@@ -70,7 +70,7 @@ class Graph:
         self.addContentLine("}")
 
     def node_pos(self,gen_id,agent_ind):
-        pos_focus_factor = 100
+        pos_focus_factor = 500
         reversed_gen_id = self.genealogy.parameters["N"] - gen_id
         return '"{},{}!"'.format(pos_focus_factor*agent_ind,pos_focus_factor*reversed_gen_id)
 
