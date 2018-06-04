@@ -58,12 +58,12 @@ def get_user_args(form_data):
         ],
         "TWO":  [
             [
-                float(form_data.get('DarkBlueSurv')),
-                float(form_data.get('DarkRedSurv'))
+                float(form_data.get('LightRedSurv')),
+                float(form_data.get('LightBlueSurv'))
             ],
             [
-                float(form_data.get('LightBlueSurv')),
-                float(form_data.get('LightRedSurv'))
+                float(form_data.get('DarkRedSurv')),
+                float(form_data.get('DarkBlueSurv'))
             ],
         ],
         'assign-position': form_data.get('should_run_fast') == "true"
