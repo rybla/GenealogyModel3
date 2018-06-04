@@ -51,6 +51,7 @@ def get_user_args(form_data):
         #"P": int(request.form.get('RedToBlueSurvival')),
         "init-distribution": [0.5] if use_single_trait else [0.5,0.5],#[int(form_data.get('RedStart'))/(int(request.form.get('BlueStart'))+int(request.form.get('RedStart')))],
         "use_single": use_single_trait,
+        "with_replacement": form_data.get('WithReplacement') == "true",
         "V": [
             float(form_data.get('RedSurvival')),
             float(form_data.get('BlueSurvival'))
@@ -110,7 +111,7 @@ def process_template(user_args):
         "CF" : CF,
         "F"  : F,
         "init_distribution" : user_args["init-distribution"],
-        "replacement" : json_genparams["replacement"]
+        "replacement" : user_args["with_replacement"]
     }
 
     graphviz_parameters = data["graphviz-parameters"]
