@@ -47,7 +47,7 @@ def get_user_args(form_data):
         "A": float(form_data.get('Aval')),
         "C": float(form_data.get('Cval')),
         #"P": int(request.form.get('RedToBlueSurvival')),
-        "init-distribution": [int(form_data.get('RedStart'))/(int(request.form.get('BlueStart'))+int(request.form.get('RedStart')))],
+        "init-distribution": [0.5],#[int(form_data.get('RedStart'))/(int(request.form.get('BlueStart'))+int(request.form.get('RedStart')))],
         "V": [int(form_data.get('RedSurvival')),int(form_data.get('BlueSurvival'))],
         'assign-position': form_data.get('should_run_fast') == "true"
     }

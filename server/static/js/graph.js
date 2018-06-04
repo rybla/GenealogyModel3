@@ -27,13 +27,13 @@ function verify_user_args(){
         $("#Survivalerr").show()
         retval = false
     }
-    if(!(checkposint(document.getElementById('RedStart').value) &&
+    /*if(!(checkposint(document.getElementById('RedStart').value) &&
          checkposint(document.getElementById('BlueStart').value))){
         $("#Starterr").show()
         retval = false
-    }
+    }*/
     if(!(check_non_neg(document.getElementById('Aval').value))){
-        $("#Cvalerr").show()
+        $("#Avalerr").show()
         retval = false
     }
     if(!(check_num(document.getElementById('Cval').value))){
@@ -47,7 +47,7 @@ function hide_all(){
     $("#Nvalerr").hide()
     $("#Pvalerr").hide()
     $("#Survivalerr").hide()
-    $("#Starterr").hide()
+    //$("#Starterr").hide()
     $("#Cvalerr").hide()
 }
 function place_text_on_svg(text){
@@ -67,10 +67,11 @@ function load_svg(){
         'Mval': document.getElementById('Mval').value,
         'Nval': document.getElementById('Nval').value,
         'Pval': document.getElementById('Pval').value,
+        'WithReplacement': document.getElementById('with_replacement').checked ? "true" : "false",
         'RedSurvival': document.getElementById('RedSurvival').value,
         'BlueSurvival': document.getElementById('BlueSurvival').value,
-        'RedStart': document.getElementById('RedStart').value,
-        'BlueStart': document.getElementById('BlueStart').value,
+        //'RedStart': document.getElementById('RedStart').value,
+        //'BlueStart': document.getElementById('BlueStart').value,
         'Aval': document.getElementById('Aval').value,
         'Cval': document.getElementById('Cval').value,
         'should_run_fast': document.getElementById('fast_checkbox').checked ? "true" : "false",
