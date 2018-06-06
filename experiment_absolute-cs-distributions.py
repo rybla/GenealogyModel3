@@ -2,7 +2,7 @@ import genealogy_lib.genealogy as G
 import genealogy_lib.graphviz as GV
 import genealogy_lib.genealogy_analyzer as GA
 
-experimentname = "test"
+experimentname = "experiment_absolute-cs-distributions"
 
 def CF(cs): return 4 if cs[0] else 1
 def F(agent, ref_gen_ind, A):

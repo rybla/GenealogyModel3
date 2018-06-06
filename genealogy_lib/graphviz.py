@@ -85,6 +85,8 @@ class Graph:
             if self.parameters["assign-position"]:
                 call(["neato","-n","-T"+type,dotfile.name,"-o",name])
             else:
+                print(dotfile.name)
+                print(name)
                 call(["dot","-T"+type,dotfile.name,"-o",name])
 
     def makePDF(self,name):
