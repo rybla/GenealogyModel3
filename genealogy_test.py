@@ -2,7 +2,7 @@ import genealogy_lib.genealogy as G
 import genealogy_lib.graphviz as GV
 
 # Knobs
-NAME = "genealogy_test"
+NAME = "genealogy_test_J05"
 M = 20
 N = 20
 P = 2
@@ -29,6 +29,7 @@ genealogy_parameters = {
 }
 
 graphviz_parameters = {
+    "assign-position": False,
     "graph-attributes" : [
         ("nodesep", "0.1"),
         ("ranksep", "1"),
@@ -54,4 +55,4 @@ genea.generate()
 # Graph
 graph = GV.Graph(genea,graphviz_parameters)
 graph.generate()
-graph.makeDot("tests/"+NAME)
+graph.make_output("tests/"+NAME,"pdf")

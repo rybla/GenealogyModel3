@@ -116,6 +116,64 @@ class GenealogyAnalyzer:
         for zi in range(len(avg)):
             result.addData(zi,xs,avg[zi])
 
+    # analyze character set evolution rate
+    def analyzeCSEV(self, resultname):
+        # record change in the percent of the population
+        # that has a specified character set
+        # betweeen first and second generations
+        self.gen_params["N"] = 2
+        # initializations
+        result = self.getResult(resultname)
+        iterations = result.meta["iterations"]
+        cs_count = result.meta["Z-size"]
+        xs = result.meta["X-range"]
+        csers_history = [ [] for _ in range(cs_count) ]
+
+        print("running iterations...")
+        for parent_number in tqdm(xs):
+            raw = [ # [char_ind][gen_ind] -> array with entry for each iteration
+                [ [] for _ in range(self.gen_params["N"]) ]
+                    for _ in range(2**self.gen_params["T"]) ]
+            avg = [] # [char_ind][gen_ind] -> average
+
+            # get generation sizes
+            first = True
+            generation_sizes = None
+
+            # set parent number
+            self.gen_params["P"] = lambda i: parent_number
+
+            for i in range(iterations):
+                g = G.Genealogy(self.gen_params)
+                g.generate()
+
+                if first:
+                    generation_sizes = g.generation_sizes
+                    first = False
+
+                d = g.getDistribution()
+                for cs_ind in range(len(d)):
+                    d_cs = d[cs_ind]
+                    for gen_ind in range(len(d_cs)):
+                        raw_cs_gen = raw[cs_ind][gen_ind]
+                        raw_cs_gen.append(d_cs[gen_ind])
+
+            for cs_ind in range(len(raw)):
+                avg.append([])
+                for gen_ind in range(len(raw[cs_ind])):
+                    avg[cs_ind].append(
+                        np.mean(raw[cs_ind][gen_ind])
+                        /generation_sizes[gen_ind])
+
+            for zi in range(len(avg)):
+                rate = avg[zi][1] - avg[zi][0] # first minus zeroth
+                csers_history[zi].append(rate)
+
+        for zi in range(cs_count):
+            result.addData(zi,xs,csers_history[zi])
+
+        
+
 class Result:
 
     def __init__(self, name, meta):

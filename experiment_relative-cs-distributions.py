@@ -11,7 +11,7 @@ def F(agent, ref_gen_ind, A):
 gen_params = {
     "name" : experimentname,
     "M" : lambda m, i: 10,
-    "N" : 5,
+    "N" : 10,
     "P" : lambda i: 1,
     "A" : 0,
     "C" : 0,
@@ -41,4 +41,4 @@ result = analyzer.getResult(experimentname)
 result.setFigParameter("title", "Relative CS Distribution evolution over Time")
 result.setFigParameter("legend",True)
 result.figPlot()
-result.figSave("hithere.png")
+result.figSave("tests/experiment_relative-cs.png")

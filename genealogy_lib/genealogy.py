@@ -202,7 +202,7 @@ class Agent:
 
     def updateAbsoluteFitness(self, C):
         self.absolute_fitness = ( self.getCharFitnessFactor()
-                                + self.getChildrenCount()    ** C )
+                                * self.getChildrenCount()    ** C )
     def getAbsoluteFitness(self): return self.absolute_fitness
 
     def updateCharFitnessFactor(self, CF, G):
