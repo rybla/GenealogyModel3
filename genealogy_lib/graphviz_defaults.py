@@ -4,8 +4,8 @@ sing_colors = [
 ]
 double_colors = [
     [
-        "#ff2626",
-        "#2626ff",
+        "#ff4040",
+        "#4040ff",
     ],
     [
         "#bf0000",
