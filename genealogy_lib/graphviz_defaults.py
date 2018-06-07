@@ -2,15 +2,9 @@ sing_colors = [
     "#FF0000",
     "#0000FF",
 ]
-double_colors = [
-    [
-        "#ff4040",
-        "#4040ff",
-    ],
-    [
-        "#bf0000",
-        "#0000b2",
-    ]
+trait_shapes = [
+    "circle",
+    "triangle"
 ]
 default_graphviz_parameters = {
 
@@ -34,7 +28,9 @@ default_graphviz_parameters = {
     ],
 
     "cs-to-color" : (
-        lambda cs: sing_colors[cs[0]] if len(cs) == 1 else double_colors[cs[0]][cs[1]]
+        lambda cs: sing_colors[cs[0]]
+    ),
+    "cs-to-shape" : (
+        lambda cs: trait_shapes[cs[1]] if len(cs) == 2 else trait_shapes[0]
     )
-
 }

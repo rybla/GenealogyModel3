@@ -41,12 +41,14 @@ class Graph:
                 agent_nodelabel = str(agent.getAbsoluteFitness())
                 agent_color = self.parameters["cs-to-color"](agent.getCS())
                 agent_pos = self.node_pos(gen_ind,agent_ind) if self.parameters["assign-position"] else ""
+                agent_shape = self.parameters["cs-to-shape"](agent.getCS())
                 # node
                 self.addNode(
                     agent_nodename,
                     agent_nodelabel,
                     agent_color,
-                    pos=agent_pos
+                    pos=agent_pos,
+                    shape=agent_shape
                 )
                 # edges to all children
                 # print("getChildrenInds:",agent.getChildrenInds())

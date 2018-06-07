@@ -118,6 +118,7 @@ def process_template(user_args):
 
     graphviz_parameters = data["graphviz-parameters"]
     graphviz_parameters["cs-to-color"] = default_graphviz_parameters["cs-to-color"]
+    graphviz_parameters["cs-to-shape"] = default_graphviz_parameters["cs-to-shape"]
     graphviz_parameters["assign-position"] = user_args['assign-position']
 
     # Genealogy
