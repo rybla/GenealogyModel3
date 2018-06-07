@@ -36,20 +36,23 @@ def plot_thingy():
     return process_template(get_user_args(request.form))
 
 def run_server_publicly():
-    app.run(host='0.0.0.0')
+    app.run()#host='0.0.0.0')
 
 def get_user_args(form_data):
     #print(form_data)
     #print(form_data.get('should_run_fast'))
     use_single_trait = form_data.get('use_single_trait') == "true"
+    print(float(form_data.get('Aval')))
     return {
         "M": int(form_data.get('Mval')),
         "N": int(form_data.get('Nval')),
         "P": int(form_data.get('Pval')),
-        "A": float(form_data.get('Aval')),
+        "A": -float(form_data.get('Aval')),
         "C": float(form_data.get('Cval')),
         #"P": int(request.form.get('RedToBlueSurvival')),
-        "init-distribution": [0.5] if use_single_trait else [0.5,0.5],#[int(form_data.get('RedStart'))/(int(request.form.get('BlueStart'))+int(request.form.get('RedStart')))],
+        "init-distribution": [1-float(form_data.get('RedPropStart'))]
+                                if use_single_trait else
+                             [1-float(form_data.get('DarkPropStart')),1-float(form_data.get('RedPropStart'))],
         "use_single": use_single_trait,
         "with_replacement": form_data.get('WithReplacement') == "true",
         "V": [
@@ -127,4 +130,4 @@ def process_template(user_args):
     graph.generate()
     svgfile = tempfile.NamedTemporaryFile()
     graph.makeSVG(svgfile.name)
-    return svgfile.read()
+    return svgfile.read().decode("utf-8")

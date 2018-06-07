@@ -70,7 +70,7 @@ class Graph:
         self.addContentLine("}")
 
     def node_pos(self,gen_id,agent_ind):
-        pos_focus_factor = 500
+        pos_focus_factor = 100
         reversed_gen_id = self.genealogy.parameters["N"] - gen_id
         return '"{},{}!"'.format(pos_focus_factor*agent_ind,pos_focus_factor*reversed_gen_id)
 
@@ -83,7 +83,7 @@ class Graph:
         with tempfile.NamedTemporaryFile() as dotfile:
             self.makeDot(dotfile.name)
             if self.parameters["assign-position"]:
-                call(["neato","-n","-T"+type,dotfile.name,"-o",name])
+                call(["dot","-Kneato","-n","-T"+type,dotfile.name,"-o",name])
             else:
                 call(["dot","-T"+type,dotfile.name,"-o",name])
 
