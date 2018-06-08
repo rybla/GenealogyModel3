@@ -93,6 +93,7 @@ function get_result(){
 }
 function load_svg(){
     var result = get_result()
+    console.log(JSON.stringify(result))
     hide_all()
     if(!verify_user_args(result)){
         place_text_on_svg("Bad user input")

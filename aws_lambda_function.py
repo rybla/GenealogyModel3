@@ -3,6 +3,7 @@ import json
 import tempfile
 import genealogy_lib.genealogy as G
 import genealogy_lib.graphviz as GV
+from genealogy_lib.graphviz_defaults import default_graphviz_parameters
 
 def lambda_handler(event, context):
     return { "success":json.dumps(process_template(get_user_args(event)))}
