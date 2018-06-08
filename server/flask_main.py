@@ -52,7 +52,7 @@ def get_user_args(form_data):
         #"P": int(request.form.get('RedToBlueSurvival')),
         "init-distribution": [1-float(form_data.get('RedPropStart'))]
                                 if use_single_trait else
-                             [1-float(form_data.get('DarkPropStart')),1-float(form_data.get('RedPropStart'))],
+                             [1-float(form_data.get('RedPropStart')),1-float(form_data.get('DarkPropStart'))],
         "use_single": use_single_trait,
         "with_replacement": form_data.get('WithReplacement') == "true",
         "V": [
@@ -62,10 +62,10 @@ def get_user_args(form_data):
         "TWO":  [
             [
                 float(form_data.get('LightRedSurv')),
-                float(form_data.get('LightBlueSurv'))
+                float(form_data.get('DarkRedSurv'))
             ],
             [
-                float(form_data.get('DarkRedSurv')),
+                float(form_data.get('LightBlueSurv')),
                 float(form_data.get('DarkBlueSurv'))
             ],
         ],
@@ -98,7 +98,7 @@ def process_template(user_args):
 
     def M(prev_m, gen_ind): return M_
     def P(gen_ind): return P_
-    def CF(cs): return V[0] if cs[0] else V[1]
+    def CF(cs): return V[cs[0]] if using_single else TWO[cs[0]][cs[1]]
     def F(agent, ref_gen_ind, A): return (agent.absolute_fitness*(ref_gen_ind - agent.gen_ind) ** A)
 
     genealogy_parameters = {
