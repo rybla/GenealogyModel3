@@ -38,7 +38,7 @@ class Graph:
             for agent_ind in range(len(generation_population)):
                 agent = generation_population[agent_ind]
                 agent_nodename = self.agentToNodeName(agent)
-                agent_nodelabel = str(agent.getAbsoluteFitness())
+                agent_nodelabel = ""#str(agent.getAbsoluteFitness())
                 agent_color = self.parameters["cs-to-color"](agent.getCS())
                 agent_pos = self.node_pos(gen_ind,agent_ind) if self.parameters["assign-position"] else ""
                 agent_shape = self.parameters["cs-to-shape"](agent.getCS())
