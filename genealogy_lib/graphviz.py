@@ -85,11 +85,11 @@ class Graph:
         with tempfile.NamedTemporaryFile() as dotfile:
             self.makeDot(dotfile.name)
             if self.parameters["assign-position"]:
-                call(["dot","-Kneato","-n","-T"+type,dotfile.name,"-o",name])
+                call([self.parameters['dot-command'],"-Kneato","-n","-T"+type,dotfile.name,"-o",name])
             else:
                 #print(dotfile.name)
                 #print(name)
-                call(["dot","-T"+type,dotfile.name,"-o",name])
+                call([self.parameters['dot-command'],"-T"+type,dotfile.name,"-o",name])
 
     def makePDF(self,name):
         self.make_output(name,"pdf")
