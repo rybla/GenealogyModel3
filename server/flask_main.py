@@ -120,6 +120,7 @@ def process_template(user_args):
     graphviz_parameters["cs-to-color"] = default_graphviz_parameters["cs-to-color"]
     graphviz_parameters["cs-to-shape"] = default_graphviz_parameters["cs-to-shape"]
     graphviz_parameters["assign-position"] = user_args['assign-position']
+    graphviz_parameters['dot-command'] = default_graphviz_parameters['dot-command']
 
     # Genealogy
     genea = G.Genealogy(genealogy_parameters)

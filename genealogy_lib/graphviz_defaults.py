@@ -22,6 +22,7 @@ default_graphviz_parameters = {
         ("width", "1"),
         ("fontsize", "20.0")
     ],
+    "dot-command": "dot",
 
     "edge-attributes" : [
         ("penwidth", "4")

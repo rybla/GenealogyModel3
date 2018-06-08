@@ -48,6 +48,7 @@ genealogy_parameters = {
 graphviz_parameters = data["graphviz-parameters"]
 graphviz_parameters["cs-to-color"] = lambda cs: "#FF0000" if cs[0] else "#0000FF"
 graphviz_parameters["cs-to-shape"] = default_graphviz_parameters["cs-to-shape"]
+graphviz_parameters['dot-command'] = default_graphviz_parameters['dot-command']
 
 # Genealogy
 genea = G.Genealogy(genealogy_parameters)
