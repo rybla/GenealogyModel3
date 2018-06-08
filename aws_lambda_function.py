@@ -9,16 +9,36 @@ def lambda_handler(event, context):
 
 def get_user_args(form_data):
     #print(form_data)
+    #print(form_data.get('should_run_fast'))
+    use_single_trait = form_data.get('use_single_trait') == "true"
+    print(float(form_data.get('Aval')))
     return {
-        "M": int(form_data['Mval']),
-        "N": int(form_data['Nval']),
-        "P": int(form_data['Pval']),
-        "A": float(form_data['Aval']),
-        "C": float(form_data['Cval']),
+        "M": int(form_data.get('Mval')),
+        "N": int(form_data.get('Nval')),
+        "P": int(form_data.get('Pval')),
+        "A": -float(form_data.get('Aval')),
+        "C": float(form_data.get('Cval')),
         #"P": int(request.form.get('RedToBlueSurvival')),
-        "init-distribution": [int(form_data['RedStart'])/(int(form_data['BlueStart'])+int(form_data['RedStart']))],
-        "V": [int(form_data['RedSurvival']),int(form_data['BlueSurvival'])],
-        'assign-position': form_data['should_run_fast'] == "true"
+        "init-distribution": [1-float(form_data.get('RedPropStart'))]
+                                if use_single_trait else
+                             [1-float(form_data.get('RedPropStart')),1-float(form_data.get('DarkPropStart'))],
+        "use_single": use_single_trait,
+        "with_replacement": form_data.get('WithReplacement') == "true",
+        "V": [
+            float(form_data.get('RedSurvival')),
+            float(form_data.get('BlueSurvival'))
+        ],
+        "TWO":  [
+            [
+                float(form_data.get('LightRedSurv')),
+                float(form_data.get('DarkRedSurv'))
+            ],
+            [
+                float(form_data.get('LightBlueSurv')),
+                float(form_data.get('DarkBlueSurv'))
+            ],
+        ],
+        'assign-position': form_data.get('should_run_fast') == "true"
     }
 
 def verify_user_args(user_args):
@@ -26,7 +46,6 @@ def verify_user_args(user_args):
     assert (user_args['M']) > 0
     assert (user_args['P']) > 0
     assert (user_args['C']) >= 0
-    user_args['init-distribution']
 
 def process_template(user_args):
     verify_user_args(user_args)
@@ -42,10 +61,12 @@ def process_template(user_args):
     N  = user_args["N"]
     P_ = user_args["P"]
     V  = user_args["V"]
+    TWO  = user_args["TWO"]
+    using_single = user_args["use_single"]
 
     def M(prev_m, gen_ind): return M_
     def P(gen_ind): return P_
-    def CF(cs): return V[0] if cs[0] else V[1]
+    def CF(cs): return V[cs[0]] if using_single else TWO[cs[0]][cs[1]]
     def F(agent, ref_gen_ind, A): return (agent.absolute_fitness*(ref_gen_ind - agent.gen_ind) ** A)
 
     genealogy_parameters = {
@@ -56,16 +77,18 @@ def process_template(user_args):
         "A" : user_args["A"],
         "C" : user_args["C"],
         "G" : json_genparams["G"],
-        "T" : 1, # json_genparams["T"],
+        "T" : 1 if using_single else 2 , # json_genparams["T"],
         "CF" : CF,
         "F"  : F,
         "init_distribution" : user_args["init-distribution"],
-        "replacement" : json_genparams["replacement"]
+        "replacement" : user_args["with_replacement"]
     }
 
     graphviz_parameters = data["graphviz-parameters"]
-    graphviz_parameters["cs-to-color"] = lambda cs: "#FF0000" if cs[0] else "#0000FF"
+    graphviz_parameters["cs-to-color"] = default_graphviz_parameters["cs-to-color"]
+    graphviz_parameters["cs-to-shape"] = default_graphviz_parameters["cs-to-shape"]
     graphviz_parameters["assign-position"] = user_args['assign-position']
+    graphviz_parameters['dot-command'] = "./dot_static"
 
     # Genealogy
     genea = G.Genealogy(genealogy_parameters)
