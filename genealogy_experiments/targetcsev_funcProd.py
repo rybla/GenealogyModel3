@@ -27,7 +27,7 @@ def F(agent, ref_gen_ind, A):
 gen_params = {
     "name" : experimentname,
     
-    "M" : lambda m, i: 100,
+    "M" : lambda m, i: 500,
 
     "A" : 0,
     "C" : 0,
@@ -51,7 +51,7 @@ meta = {
     "Z-names"    : [ "CS#"+str(targetcs_ind)  ],
     "Z-size"     : 1,
     "I-value"    : targetcs_ind,
-    "iterations" : 10,
+    "iterations" : 1000,
 }
 
 analyzer = GA.GenealogyAnalyzer(analyzer_params, gen_params)
@@ -63,4 +63,4 @@ result.setFigParameter("title", "Evolution Rate of CS#"+str(targetcs_ind)+" vary
 result.setFigParameter("legend",True)
 result.figPlot()
 result.figShow()
-result.figSave("outputs/"+experimentname+".png")
+result.figSave("outputs/"+experimentname+"i"+str(meta["iterations"])+".png")
