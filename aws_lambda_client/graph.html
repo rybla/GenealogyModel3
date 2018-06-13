@@ -31,10 +31,10 @@ td {
 
 </style>
 <body>
-    <h1>Graph plot</h1>
+    <h1>Hyper-parental genealogy generator</h1>
     <div id="formid">
 
-        Entities per time step: <input type="number" id="Mval" value=10><br>
+        Births per generation: <input type="number" id="Mval" value=10><br>
         <div id="Mvalerr" hidden><p class="err_style">Input error: Must be greater than 0</p><br></div>
 
         Time steps: <input type="number" id="Nval" value=20><br>
@@ -43,13 +43,49 @@ td {
         Parents: <input type="number" id="Pval" value=2><br>
         <div id="Pvalerr" hidden><p class="err_style">Input error: Must be greater than 0</p><br></div>
 
-        Selection with replacement: <input id="with_replacement" type="checkbox"><br>
+        Parent selection with replacement: <input id="with_replacement" type="checkbox"><br>
 
         <input type="radio" id="single_trait_id" name="num_traits" value="single_trait" checked>
         <label for="single_trait_id">Single trait</label>
         <input type="radio" id="two_trait_id" name="num_traits" value="two_traits">
         <label for="two_trait_id">Two traits</label>
         <br>
+
+        Initial generation % red: <input type="number" id="RedPropStart" value=0.5><br>
+        <div class="single_trait_survival">
+            <!--Proportion of starting red vs blue: <input type="number" id="RedStart" value=1>/
+                        <input type="number" id="BlueStart" value=1><br>-->
+        </div>
+        <div class="two_trait_survival" hidden>
+            Initial generation % circles: <input type="number" id="DarkPropStart" value=0.5><br>
+            <!--<table>
+                Initial population trait proportions (automatically normalized)
+                <tr>
+                    <td> </td>
+                    <td> Red </td>
+                    <td> Blue </td>
+                </tr>
+                <tr>
+                    <td> Light</td>
+                    <td> <input type="number" id="LightRedStart" value=1> </td>
+                    <td> <input type="number" id="LightBlueStart" value=1> </td>
+                </tr>
+                <tr>
+                    <td> Dark</td>
+                    <td> <input type="number" id="DarkRedStart" value=1> </td>
+                    <td> <input type="number" id="DarkBlueStart" value=1> </td>
+                </tr>
+            </table>-->
+        </div>
+        <div id="StartPropErr" hidden><p class="err_style">Input error: Proportions must be between 0 and 1</p><br></div>
+
+        Selection weight for parent's age: <input type="number" id="Aval" step=0.2 value=0><br>
+        <div id="Avalerr" hidden><p class="err_style">Input error: Needs to be a number</p><br></div>
+
+        Selection weight for parent's historical child count: <input type="number" id="Cval" step=0.2 value=0><br>
+        <div id="Cvalerr" hidden><p class="err_style">Input error: Cannot be negative</p><br></div>
+
+
 
         <div class="single_trait_survival">
             Red to Blue survival ratio: <input type="number" id="RedSurvival" value=2>/
@@ -79,45 +115,12 @@ td {
 
         <div id="Survivalerr" hidden><p class="err_style">Input error: All numbers must be greater than 0</p><br></div>
 
-        Proportion of starting red vs blue: <input type="number" id="RedPropStart" value=0.5><br>
-        <div class="single_trait_survival">
-            <!--Proportion of starting red vs blue: <input type="number" id="RedStart" value=1>/
-                        <input type="number" id="BlueStart" value=1><br>-->
-        </div>
-        <div class="two_trait_survival" hidden>
-            Proportion of starting circles vs triangles: <input type="number" id="DarkPropStart" value=0.5><br>
-            <!--<table>
-                Initial population trait proportions (automatically normalized)
-                <tr>
-                    <td> </td>
-                    <td> Red </td>
-                    <td> Blue </td>
-                </tr>
-                <tr>
-                    <td> Light</td>
-                    <td> <input type="number" id="LightRedStart" value=1> </td>
-                    <td> <input type="number" id="LightBlueStart" value=1> </td>
-                </tr>
-                <tr>
-                    <td> Dark</td>
-                    <td> <input type="number" id="DarkRedStart" value=1> </td>
-                    <td> <input type="number" id="DarkBlueStart" value=1> </td>
-                </tr>
-            </table>-->
-        </div>
-        <div id="StartPropErr" hidden><p class="err_style">Input error: Proportions must be between 0 and 1</p><br></div>
 
 
         <!--Red to Blue start ratio: <input type="number" id="RedStart" value=1>/
                     <input type="number" id="BlueStart" value=1><br>
         <div id="Starterr" hidden><p class="err_style">Input error: Both numbers must be greater than 0</p><br></div>
         -->
-
-        Age adjustment: <input type="number" id="Aval" step=0.2 value=0><br>
-        <div id="Avalerr" hidden><p class="err_style">Input error: Needs to be a number</p><br></div>
-
-        Citation adjustment: <input type="number" id="Cval" step=0.2 value=0><br>
-        <div id="Cvalerr" hidden><p class="err_style">Input error: Cannot be negative</p><br></div>
 
         Enble fast graph rendering: <input id="fast_checkbox" type="checkbox">
 
