@@ -14,6 +14,13 @@ import math
 import numpy as np
 from tqdm import tqdm
 
+############################################################
+### GENEALOGY ANALYZER
+##
+#   - Runs analyses, given parameters, and stores
+#     results in a Results object.
+############################################################
+
 
 class GenealogyAnalyzer:
 
@@ -119,7 +126,7 @@ class GenealogyAnalyzer:
     # analyze character set evolution rate
     def analyzeCSEV(self, resultname):
         # record change in the percent of the population
-        # that has a specified character set
+        # for each possible character set
         # betweeen first and second generations
         self.gen_params["N"] = 2
         # initializations
@@ -172,6 +179,61 @@ class GenealogyAnalyzer:
         for zi in range(cs_count):
             result.addData(zi,xs,csers_history[zi])
 
+    def analyzeTargetCSEV(self, resultname):
+        # record change in the percent of the population
+        # that has a specified character set
+        # betweeen first and second generations
+        self.gen_params["N"] = 2
+        # initializations
+        result = self.getResult(resultname)
+        iterations = result.meta["iterations"]
+        xs = result.meta["X-range"]
+        targetcs_ind = result.meta["I-value"]
+        history = []
+
+        print("running iterations...")
+        for parent_number in tqdm(xs):
+
+            raw = [ # [gen_ind] -> array with entry for each iteration
+                [] for _ in range(self.gen_params["N"]) ]
+            avg = [] # [gen_ind] -> average
+
+            # get generation sizes
+            first = True
+            generation_sizes = None
+
+            # set parent number
+            self.gen_params["P"] = lambda i: parent_number
+
+            for i in range(iterations):
+                g = G.Genealogy(self.gen_params)
+                g.generate()
+
+                if first:
+                    generation_sizes = g.generation_sizes
+                    first = False
+
+                d = g.getDistribution()[targetcs_ind]
+                for gen_ind in range(len(d)):
+                    raw[gen_ind].append(d[gen_ind])
+
+            for gen_ind in range(len(raw)):
+                avg.append(
+                    np.mean(raw[gen_ind])
+                    /generation_sizes[gen_ind])
+
+            rate = avg[1] - avg[0] # first minus zeroth
+            history.append(rate)
+
+        # add data
+        result.addData(0,xs,history)
+
+############################################################
+### RESULT
+##
+#   - Stores data collected from an analysis,
+#     including experiment and graphing parameters.
+############################################################
         
 
 class Result:

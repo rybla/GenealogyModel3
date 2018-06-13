@@ -34,7 +34,7 @@ gen_params = {
     "F"  : F,
     # "init_distribution" : [0.25,0.25,0.25,0.25],
     "init_distribution": init_distribution,
-    "replacement" : False
+    "replacement" : True
 }
 
 analyzer_params = {}
@@ -44,7 +44,7 @@ meta = {
     "Y-name": "Evolution Rate",
     "Z-names": [ "CS#" + str(i) for i in range(2**gen_params["T"])],
     "Z-size": 2**gen_params["T"],
-    "iterations": 20,
+    "iterations": 50,
 }
 
 analyzer = GA.GenealogyAnalyzer(analyzer_params, gen_params)
@@ -56,4 +56,4 @@ result.setFigParameter("title", "Evolution Rate respective to each Character Set
 result.setFigParameter("legend",True)
 result.figPlot()
 result.figShow()
-result.figSave("tests/"+experimentname+".png")
+result.figSave("outputs/"+experimentname+"_i"+str(meta["iterations"])+"_repl"+str(gen_params["replacement"])+".png")
