@@ -2,16 +2,18 @@ import genealogy_lib.genealogy as G
 import genealogy_lib.graphviz as GV
 import genealogy_lib.genealogy_analyzer as GA
 
-experimentname = "experiemnt_csev"
+experimentname = "exp_csev"
 
 values = [
-    0.10, 0.01,
-    0.01, 1.00
+    0.01, 0.49,
+    0.49, 0.01
 ]
 
 init_distribution = [
-    0.98, 0.01, 0.01, 0.00
+    0.25, 0.25, 0.25, 0.25
 ]
+
+iterations = 50
 
 def CF(cs):
     cs = [ 1 if c else 0 for c in cs ]
@@ -40,11 +42,12 @@ gen_params = {
 analyzer_params = {}
 
 meta = {
-    "X-name": "Parent Number", "X-range": [i for i in range(1,50,2)],
+    "X-name": "Parent Number",
+    "X-range": [1,2,3,4,5,6,7,8,9] + [i for i in range(10,100,10)],
     "Y-name": "Evolution Rate",
     "Z-names": [ "CS#" + str(i) for i in range(2**gen_params["T"])],
     "Z-size": 2**gen_params["T"],
-    "iterations": 50,
+    "iterations": iterations,
 }
 
 analyzer = GA.GenealogyAnalyzer(analyzer_params, gen_params)
@@ -56,4 +59,12 @@ result.setFigParameter("title", "Evolution Rate respective to each Character Set
 result.setFigParameter("legend",True)
 result.figPlot()
 result.figShow()
-result.figSave("outputs/"+experimentname+"_i"+str(meta["iterations"])+"_repl"+str(gen_params["replacement"])+".png")
+name = (
+    "outputs/"+experimentname
+    + "_values="+str(values).replace(" ","")
+    + "_i="+str(meta["iterations"])
+    + "_repl="+str(gen_params["replacement"])
+    + "_initdist="+str(gen_params["init_distribution"]).replace(" ","")
+    + ".png")
+result.figSave(name)
+print("wrote:",name)

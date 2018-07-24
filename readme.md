@@ -1,4 +1,4 @@
-# Genealogy 3
+# Genealogy Model 3
 
 This is the third version of my simple genealogy modeler. This program creates randomized genealogies with a process influenced by several customizable parameters.
 
