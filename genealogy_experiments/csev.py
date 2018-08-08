@@ -4,10 +4,12 @@ import genealogy_lib.genealogy_analyzer as GA
 
 experimentname = "exp_csev"
 
-values = [
-    0.01, 0.49,
-    0.49, 0.01
-]
+def normalize(vs):
+    return [ v/sum(vs) for v in vs ]
+
+values = normalize([
+    2,1,2,1
+])
 
 init_distribution = [
     0.25, 0.25, 0.25, 0.25
